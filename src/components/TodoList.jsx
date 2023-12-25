@@ -61,10 +61,10 @@ const ToDoList = () => {
     <div className="container">
       <code>key=index</code>
       <br />
-      <button onClick={addToStart}>Add New to Start</button>
-      <button onClick={addToEnd}>Add New to End</button>
-      <button onClick={sortByEarliest}>Sort by Earliest</button>
-      <button onClick={sortByLatest}>Sort by Latest</button>
+      <button onClick={addToStart} className="btn btn-primary">Add New to Start</button>
+      <button onClick={addToEnd} className="btn btn-primary">Add New to End</button>
+      <button onClick={sortByEarliest} className="btn btn-success">Sort by Earliest</button>
+      <button onClick={sortByLatest} className="btn btn-success">Sort by Latest</button>
       <table>
         <thead>
         <tr>
