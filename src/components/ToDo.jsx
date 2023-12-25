@@ -1,14 +1,26 @@
 import React, {useState} from 'react';
 
 
-function ToDo ({index, id, createdAt, onInputChange, onDelete}) {
+function ToDo ({index, id, value, createdAt, onInputChange, onDelete}) {
     const [inputValue, setInputValue] = useState('');
 
-    const handleInputChange = (event) => {
-      let value = event.target.value;
-      setInputValue(value);
-      onInputChange(value);
-    };
+    // const handleInputChange = (event) => {
+    //   let value = event.target.value;
+    //   console.log(value);
+    //   setInputValue(value);
+    //   onInputChange(value);
+    // };
+
+    const changeItem = (event)=>{
+        const newValue = event.target.value;
+        setInputValue(newValue);
+        const newItem = {
+            id: id,
+            value: newValue,
+            createdAt: createdAt
+        };
+        onInputChange(newItem);
+    }
 
     return (<tr>
       <td>
@@ -18,7 +30,7 @@ function ToDo ({index, id, createdAt, onInputChange, onDelete}) {
         <label>{id}</label>
       </td>
       <td>
-        <input type="text" value={inputValue} onChange={handleInputChange} /> 
+        <input type="text" value={inputValue} onChange={changeItem} /> 
         <button onClick={() => onDelete(index)}>Delete</button>
       </td>
       <td>

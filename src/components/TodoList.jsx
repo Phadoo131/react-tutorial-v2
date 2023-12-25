@@ -45,21 +45,16 @@ const ToDoList = () => {
     setTodoCounter(nextId);
   };
 
-  const handleInputChange = (key, inputValue) => {
-    const updatedList = list.map((todo, key) =>
-      key === todo.id ? { ...todo, value: inputValue } : todo
+  const handleInputChange = (index, newItem) => {
+    setList((prevList) =>
+        prevList.map((todo, i) => (i === index ? newItem : todo))
     );
-    setList(updatedList);
   };
 
   const deleteRow = (index) =>{
     const updatedList = list.filter((_,ind) => ind !== index);
     setList(updatedList);
     console.log('deleted!');
-
-    //or do as the below code
-    // const updatedList = list.splice(index, 1);
-    // setList(updatedList);
   }
 
   return (
@@ -71,16 +66,20 @@ const ToDoList = () => {
       <button onClick={sortByEarliest}>Sort by Earliest</button>
       <button onClick={sortByLatest}>Sort by Latest</button>
       <table>
+        <thead>
         <tr>
           <th>Index</th>
           <th>ID</th>
           <th>Item</th>
           <th>Created at</th>
         </tr>
+        </thead>
+        <tbody>
         {list.map((todo, index) => (
-          <ToDo key={todo.id} index={index} onInputChange={(value) => handleInputChange(index, value)}
+          <ToDo key={todo.id} value={todo.value} index={index} onInputChange={(value) => handleInputChange(index, value)}
         onDelete={deleteRow} {...todo} />
         ))}
+        </tbody>
       </table>
     </div>
   );
