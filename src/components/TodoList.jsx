@@ -58,7 +58,7 @@ const ToDoList = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <code>key=index</code>
       <br />
       <button onClick={addToStart}>Add New to Start</button>
