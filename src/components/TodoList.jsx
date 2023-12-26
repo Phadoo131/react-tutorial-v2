@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ToDo from './ToDo';
 
 const ToDoList = () => {
-  const [todoCounter, setTodoCounter] = useState(1);
+  const [todoCounter, setTodoCounter] = useState(201);
   const [list, setList] = useState([
     {
-      id: 1,
+      id: 201,
       value: '',
       createdAt: new Date(),
     },
@@ -56,6 +56,28 @@ const ToDoList = () => {
     setList(updatedList);
     console.log('deleted!');
   }
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/todos/');
+        const todos = await response.json();
+  
+        const newList = todos.map((item) => ({
+          id: item.id,
+          value: item.title,
+          createdAt: new Date(),
+        }));
+  
+        setList(newList);
+        console.log(newList);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
 
   return (
     <div className="container">

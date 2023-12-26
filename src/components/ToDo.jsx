@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 
 function ToDo ({index, id, value, createdAt, onInputChange, onDelete}) {
-    const [inputValue, setInputValue] = useState('');
+    //const [inputValue, setInputValue] = useState('');
 
     // const handleInputChange = (event) => {
     //   let value = event.target.value;
@@ -13,7 +13,7 @@ function ToDo ({index, id, value, createdAt, onInputChange, onDelete}) {
 
     const changeItem = (event)=>{
         const newValue = event.target.value;
-        setInputValue(newValue);
+        //setInputValue(newValue);
         const newItem = {
             id: id,
             value: newValue,
@@ -30,7 +30,7 @@ function ToDo ({index, id, value, createdAt, onInputChange, onDelete}) {
         <label>{id}</label>
       </td>
       <td>
-        <input type="text" value={inputValue} onChange={changeItem} /> 
+        <input type="text" value={value} onChange={changeItem} /> 
         <button onClick={() => onDelete(index)}>Delete</button>
       </td>
       <td>
