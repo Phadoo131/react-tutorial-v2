@@ -1,107 +1,102 @@
-import React, { useState, useEffect } from 'react';
-import ToDo from './ToDo';
+import React, {useState, useEffect} from 'react'
+import Todo from './Todo';
 
-const ToDoList = () => {
-  const [todoCounter, setTodoCounter] = useState(201);
-  const [list, setList] = useState([
-    {
-      id: 201,
-      value: '',
-      createdAt: new Date(),
-    },
-  ]);
+function TodoList() {
 
-  useEffect(()=>{
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/todos/');
-        const todos = await response.json();
-  
-        const newList = todos.map((item) => ({
-          id: item.id,
-          value: item.title,
-          createdAt: new Date(),
-        }));
-  
+    const [todoCounter, setTodoCounter] = useState(201);
+    const [list, setList] = useState([]);
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            try{
+                const response = await fetch('http://localhost:5000/todos');
+                const data = await response.json();
+
+                const newList = data.map((item) => (
+                    {id: item.id,
+                    value: item.title,
+                    createdAt: new Date(),
+                    }));
+
+                setList(newList);
+
+                } catch(err){
+                    console.log(err);
+                }
+            }
+            fetchData();
+        }, [])
+
+    const addToEnd = (event) => {
+        let newCount = todoCounter + 1;
+        let date = new Date();
+
+        const newList = [...list, {
+            id: newCount,
+            value: '',
+            createdAt: date,
+        }]
+
         setList(newList);
-        console.log(newList);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-  
-    fetchData();
-  }, []);
+        setTodoCounter(newCount);
+    }
 
-  const sortByEarliest = () => {
-    const sortedList = [...list].sort((a, b) => a.id - b.id);
-    setList(sortedList);
-  };
+    const addToStart = (event) => {
+        let newCount = todoCounter + 1;
+        let date = new Date();
 
-  const sortByLatest = () => {
-    const sortedList = [...list].sort((a, b) => b.id - a.id);
-    setList(sortedList);
-  };
+        const newList = [{
+            id: newCount,
+            value: '',
+            createdAt: date,
+        }, ...list,]
 
-  const addToEnd = (inputValue) => {
-    const date = new Date();
-    const nextId = todoCounter + 1;
-    const newList = [
-      ...list,
-      { id: nextId, value: inputValue.value, createdAt: date },
-    ];
-    console.log(newList);
-    setList(newList);
-    setTodoCounter(nextId);
-  };
+        setList(newList);
+        setTodoCounter(newCount);
+    }
 
-  const addToStart = (inputValue) => {
-    const date = new Date();
-    const nextId = todoCounter + 1;
-    console.log(inputValue.value);
-    const newList = [
-      { id: nextId, value: inputValue.value, createdAt: date },
-      ...list,
-    ];
-    console.log(newList);
-    setList(newList);
-    setTodoCounter(nextId);
-  };
+    const deleteRow = (index)=>{
+        const newList = [...list].filter((_,i)=> i !== index);
+        
+        setList(newList);
+    }
 
-  const handleInputChange = (index, newItem) => {
-    setList((prevList) =>
-        prevList.map((todo, i) => (i === index ? newItem : todo))
-    );
-  };
+    const changeRow = (index, newList) =>{
+        list[index] = newList;
 
-  const deleteRow = (index) =>{
-    const updatedList = list.filter((_,ind) => ind !== index);
-    setList(updatedList);
-    console.log('deleted!');
-  }
+        setList([...list]);
+    }
 
-  return (
-  <>  <div className="bg-primary-content">
-        <br></br> 
-      </div>
-    <nav className="bg-primary-content">
-    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-      <div className="relative flex h-16 items-center justify-between">
-        <div className="flex space-x-4">
-          <button onClick={addToStart} className="btn btn-success">Add New to Start</button>&nbsp;&nbsp;
-          <button onClick={addToEnd} className="btn btn-success">Add New to End</button>&nbsp;&nbsp;
-          <button onClick={sortByEarliest} className="btn btn-warning">Sort by Earliest</button>&nbsp;&nbsp;
-          <button onClick={sortByLatest} className="btn btn-warning">Sort by Latest</button>
+    const sortByEarliest = ()=>{
+        const newList = [...list].sort((a, b)=> {
+            return a.id - b.id;
+        })
+
+        setList(newList);
+    }
+
+    const sortByLatest = ()=>{
+        const newList = [...list].sort((a, b)=> {
+            return b.id - a.id;
+        })
+
+        setList(newList);
+    }
+
+    return (
+        <div className="container text-center"> 
+        <div className="justify-content-md-center">
+          <button onClick={addToStart} className="btn btn-primary">Add New to Start</button>&nbsp;&nbsp;
+          <button onClick={addToEnd} className="btn btn-primary">Add New to End</button>&nbsp;&nbsp;
+          <button onClick={sortByEarliest} className="btn btn-secondary">Sort by Earliest</button>&nbsp;&nbsp;
+          <button onClick={sortByLatest} className="btn btn-secondary">Sort by Latest</button>
         </div>
-      </div>
-    </div>
-  </nav>
-    <div className="bg-primary-content">
+    <div>
       <br />
-      <div class="overflow-x-auto">
-        <table className="table table-zebra">
+      <div>
+        <table className="table table-striped">
           <thead>
-          <tr className="hover">
+          <tr>
             <th>Index</th>
             <th>ID</th>
             <th>Item</th>
@@ -110,16 +105,16 @@ const ToDoList = () => {
           </tr>
           </thead>
           <tbody>
-          {list.map((todo, index) => (
-            <ToDo
-            key={todo.id} val={todo.value} index={index} onInputChange={(value) => handleInputChange(index, value)}
-          onDelete={deleteRow} {...todo} />
+          {list.map((list, index) => (
+            <Todo
+                key={list.id} data={list} index={index} onInputChange={(value) => changeRow(index, value)}
+                 onDelete={deleteRow} {...list} />
           ))}
           </tbody>
         </table>
       </div>
-    </div> </>
-  );
-};
+    </div> </div>
+    )
+}
 
-export default ToDoList;
+export default TodoList;
