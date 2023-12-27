@@ -81,14 +81,23 @@ const ToDoList = () => {
   }
 
   return (
+  <>  <div className="bg-primary-content">
+        <br></br> 
+      </div>
+    <nav className="bg-primary-content">
+    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div className="relative flex h-16 items-center justify-between">
+        <div className="flex space-x-4">
+          <button onClick={addToStart} className="btn btn-success">Add New to Start</button>&nbsp;&nbsp;
+          <button onClick={addToEnd} className="btn btn-success">Add New to End</button>&nbsp;&nbsp;
+          <button onClick={sortByEarliest} className="btn btn-warning">Sort by Earliest</button>&nbsp;&nbsp;
+          <button onClick={sortByLatest} className="btn btn-warning">Sort by Latest</button>
+        </div>
+      </div>
+    </div>
+  </nav>
     <div className="bg-primary-content">
       <br />
-      <div className='navbar bg-neutral text-neutral-content'>
-        <button onClick={addToStart} className="btn btn-success">Add New to Start</button>
-        <button onClick={addToEnd} className="btn btn-success">Add New to End</button>
-        <button onClick={sortByEarliest} className="btn btn-warning">Sort by Earliest</button>
-        <button onClick={sortByLatest} className="btn btn-warning">Sort by Latest</button>
-      </div>
       <div class="overflow-x-auto">
         <table className="table table-zebra">
           <thead>
@@ -109,7 +118,7 @@ const ToDoList = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </div> </>
   );
 };
 
