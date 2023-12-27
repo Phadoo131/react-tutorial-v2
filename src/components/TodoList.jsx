@@ -34,12 +34,12 @@ const ToDoList = () => {
   }, []);
 
   const sortByEarliest = () => {
-    const sortedList = [...list].sort((a, b) => a.createdAt - b.createdAt);
+    const sortedList = [...list].sort((a, b) => a.id - b.id);
     setList(sortedList);
   };
 
   const sortByLatest = () => {
-    const sortedList = [...list].sort((a, b) => b.createdAt - a.createdAt);
+    const sortedList = [...list].sort((a, b) => b.id - a.id);
     setList(sortedList);
   };
 
